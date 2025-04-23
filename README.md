@@ -40,7 +40,8 @@ npm start
 
 ## Скриншоты
 
-[Здесь будут скриншоты приложения]
+![image](https://github.com/user-attachments/assets/b85dc66f-61b6-49ef-9dfe-9ecdb1a8fe67)
+
 
 ## Лицензия
 

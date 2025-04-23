@@ -1,38 +1,24 @@
-# Build stage
-FROM node:18-alpine as build
+# Используем Node.js 16 Alpine как базовый образ
+FROM node:16-alpine
 
+# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Копируем файлы package.json и package-lock.json
+COPY package.json ./
+COPY package-lock.json ./
 
-# Install dependencies
-RUN npm config set legacy-peer-deps true && \
-    npm ci
+# Устанавливаем зависимости
+RUN npm install --production=false
 
-# Copy source code
+# Копируем исходный код
 COPY . .
 
-# Build the app
+# Собираем приложение
 RUN npm run build
 
-# Production stage
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Install serve
-RUN npm install -g serve
-
-# Copy built assets from build stage
-COPY --from=build /app/build ./build
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=3000
-
-# Expose port
+# Открываем порт 3000
 EXPOSE 3000
 
-# Start the app
-CMD ["serve", "-s", "build", "-l", "3000"] 
+# Запускаем приложение
+CMD ["npm", "start"] 

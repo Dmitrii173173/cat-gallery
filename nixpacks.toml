@@ -2,10 +2,14 @@
 nixPkgs = ['nodejs-18_x', 'npm-9_x']
 
 [phases.install]
-cmds = ['npm install --legacy-peer-deps']
+cmds = ['npm install --legacy-peer-deps --production=false']
 
 [phases.build]
 cmds = ['npm run build']
 
 [start]
-cmd = 'npm start' 
+cmd = 'npm start'
+
+[phases.setup.env]
+NODE_ENV = "production"
+NPM_CONFIG_LEGACY_PEER_DEPS = "true" 

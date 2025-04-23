@@ -5,10 +5,10 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY .npmrc ./
 
-# Install dependencies with legacy-peer-deps flag
-RUN npm install --legacy-peer-deps
+# Install dependencies
+RUN npm config set legacy-peer-deps true && \
+    npm ci
 
 # Copy source code
 COPY . .

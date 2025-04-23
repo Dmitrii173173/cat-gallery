@@ -1,15 +1,14 @@
-# Используем Node.js 16 Alpine как базовый образ
-FROM node:16-alpine
+# Используем Node.js 18 Alpine как базовый образ
+FROM node:18-alpine
 
 # Устанавливаем рабочую директорию
 WORKDIR /app
 
 # Копируем файлы package.json и package-lock.json
-COPY package.json ./
-COPY package-lock.json ./
+COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install --production=false
+RUN npm ci --only=production
 
 # Копируем исходный код
 COPY . .
@@ -17,8 +16,11 @@ COPY . .
 # Собираем приложение
 RUN npm run build
 
+# Устанавливаем serve для раздачи статических файлов
+RUN npm install -g serve
+
 # Открываем порт 3000
 EXPOSE 3000
 
-# Запускаем приложение
-CMD ["npm", "start"] 
+# Запускаем приложение через serve для раздачи статического контента
+CMD ["serve", "-s", "build", "-l", "3000"] 
